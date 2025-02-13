@@ -9,11 +9,11 @@ RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 # Install captbrogers/ghost-minio (S3-compatible storage adapter)
 RUN npm install github:captbrogers/ghost-minio --save
-RUN mkdir -p content/adapters/storage
-RUN cp -r node_modules/ghost-minio content/adapters/storage/s3
+RUN mkdir -p ./adapters/storage
+RUN cp -r ./node_modules/ghost-minio /adapters/storage/s3
 
 # Copy the custom Ghost configuration file
-COPY config.production.json /var/lib/ghost/content/config.production.json
+COPY config.production.json ./config.production.json
 
 # Ensure proper permissions
 RUN chown -R node:node /var/lib/ghost
