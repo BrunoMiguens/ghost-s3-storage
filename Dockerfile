@@ -13,7 +13,7 @@ RUN mkdir -p content/adapters/storage
 RUN cp -r node_modules/ghost-minio content/adapters/storage/s3
 
 # Copy the custom Ghost configuration file
-COPY config.production.json /var/lib/ghost/config.production.json
+COPY config.production.json /var/lib/ghost/content/config.production.json
 
 # Ensure proper permissions
 RUN chown -R node:node /var/lib/ghost
