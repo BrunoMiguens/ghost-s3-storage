@@ -26,10 +26,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.actor }}/custom-ghost-s3:latest .
-          docker build -t ghcr.io/${{ github.actor }}/custom-ghost-s3:${{ env.VERSION }} .
+          docker build -t ghcr.io/${{ github.actor }}/ghost-s3-storage:latest .
+          docker build -t ghcr.io/${{ github.actor }}/ghost-s3-storage:${{ env.VERSION }} .
 
       - name: Push Docker images
         run: |
-          docker push ghcr.io/${{ github.actor }}/custom-ghost-s3:latest
-          docker push ghcr.io/${{ github.actor }}/custom-ghost-s3:${{ env.VERSION }}
+          docker push ghcr.io/${{ github.actor }}/ghost-s3-storage:latest
+          docker push ghcr.io/${{ github.actor }}/ghost-s3-storage:${{ env.VERSION }}
