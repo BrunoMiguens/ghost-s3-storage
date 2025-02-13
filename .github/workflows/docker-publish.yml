@@ -2,10 +2,8 @@ name: Publish Docker Image to GHCR
 
 on:
   push:
-    branches:
-      - main
-    tags: 
-      - "v*"
+    tags:
+      - "*"
 
 jobs:
   build-and-push:
@@ -24,12 +22,18 @@ jobs:
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
+      - name: "Set Lowercase User"
+        run: |
+          echo "REPO_AUTHOR=${AUTHOR,,}" >>${GITHUB_ENV}
+        env:
+          AUTHOR: "${{ github.actor }}"
+
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.actor }}/ghost-s3-storage:latest .
-          docker build -t ghcr.io/${{ github.actor }}/ghost-s3-storage:${{ env.VERSION }} .
+          docker build -t ghcr.io/${{ env.REPO_AUTHOR }}/ghost-s3-storage:latest .
+          docker build -t ghcr.io/${{ env.REPO_AUTHOR }}/ghost-s3-storage:${{ env.VERSION }} .
 
       - name: Push Docker images
         run: |
-          docker push ghcr.io/${{ github.actor }}/ghost-s3-storage:latest
-          docker push ghcr.io/${{ github.actor }}/ghost-s3-storage:${{ env.VERSION }}
+          docker push ghcr.io/${{ env.REPO_AUTHOR }}/ghost-s3-storage:latest
+          docker push ghcr.io/${{ env.REPO_AUTHOR }}/ghost-s3-storage:${{ env.VERSION }}
