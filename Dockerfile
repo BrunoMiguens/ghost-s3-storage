@@ -2,18 +2,18 @@
 FROM ghost:latest
 
 # Set working directory
-WORKDIR /var/lib/ghost
+WORKDIR /var/lib/ghost/content
 
 # Install Git (required for npm to fetch from GitHub)
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 # Install captbrogers/ghost-minio (S3-compatible storage adapter)
 RUN npm install github:captbrogers/ghost-minio --save
-RUN mkdir -p ./adapters/storage
-RUN cp -r ./node_modules/ghost-minio /adapters/storage/s3
+RUN mkdir -p adapters/storage
+RUN cp -r node_modules/ghost-minio adapters/storage/s3
 
 # Copy the custom Ghost configuration file
-COPY config.production.json ./config.production.json
+COPY config.production.json config.production.json
 
 # Ensure proper permissions
 RUN chown -R node:node /var/lib/ghost
