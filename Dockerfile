@@ -19,7 +19,10 @@ RUN cd /var/lib/ghost/content/adapters/storage/ghost-minio && \
     npm install ghost-minio@github:captbrogers/ghost-minio
 
 # Copy config file
-COPY --chown=node:node config.production.json /var/lib/ghost/config.production.json
+COPY config.production.json /var/lib/ghost/config.production.json
+
+# Ensure the correct ownership of files
+RUN chown -R node:node /var/lib/ghost/content
 
 # Start Ghost
 CMD ["node", "current/index.js"]
