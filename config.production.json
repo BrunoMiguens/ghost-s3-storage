@@ -1,5 +1,9 @@
 {
   "url": "${URL}",
+  "server": {
+    "port": 2368,
+    "host": "0.0.0.0"
+  },
   "database": {
     "client": "mysql",
     "connection": {
@@ -11,7 +15,7 @@
     }
   },
   "mail": {
-    "transport": "${MAIL_TRANSPORT}",
+    "transport": "SMTP",
     "options": {
       "service": "${MAIL_SERVICE}",
       "host": "${MAIL_HOST}",
@@ -23,19 +27,18 @@
     }
   },
   "storage": {
-    "active": "ghost-s3",
-    "ghost-s3": {
-      "endpoint": "${S3_ENDPOINT}",
+    "active": "ghost-minio",
+    "ghost-minio": {
+      "endPoint": "${S3_ENDPOINT}",
       "port": "${S3_PORT}",
       "useSSL": "${S3_USE_SSL}",
-      "accessKeyId": "${S3_ACCESS_KEY}",
-      "secretAccessKey": "${S3_SECRET_KEY}",
+      "accessKey": "${S3_ACCESS_KEY}",
+      "secretKey": "${S3_SECRET_KEY}",
       "bucket": "${S3_BUCKET}",
       "region": "${S3_REGION}"
     }
   },
-  "server": {
-    "port": 2368,
-    "host": "${HOST}"
+  "paths": {
+    "contentPath": "/var/lib/ghost/content"
   }
 }

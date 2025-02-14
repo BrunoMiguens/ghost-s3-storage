@@ -1,25 +1,24 @@
-# Use the official Ghost image as the base
-FROM ghost:latest
+# Dockerfile
+FROM ghost:5-alpine
 
-# Set working directory
-WORKDIR /var/lib/ghost/content
+# Install git and build dependencies
+RUN apk add --no-cache git python3 make g++ 
 
-# Install Git (required for npm to fetch from GitHub)
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+# Install ghost-minio adapter
+RUN mkdir -p ./content/adapters/storage/ghost-minio && \
+    cd ./content/adapters/storage && \
+    git clone https://github.com/captbrogers/ghost-minio.git ghost-minio && \
+    cd ghost-minio && \
+    npm install --production
 
-# Install captbrogers/ghost-minio (S3-compatible storage adapter)
-RUN npm install github:captbrogers/ghost-minio --save
-RUN mkdir -p adapters/storage
-RUN cp -r node_modules/ghost-minio adapters/storage/s3
+# Set up configuration
+COPY config.production.json ./content/config.production.json
 
-# Copy the custom Ghost configuration file
-COPY config.production.json config.production.json
+# Set permissions
+RUN chown -R node:node /var/lib/ghost/content
 
-# Ensure proper permissions
-RUN chown -R node:node /var/lib/ghost
-
-# Expose Ghost's default port
-EXPOSE 2368
+# Switch to node user
+USER node
 
 # Start Ghost
-CMD ["docker-entrypoint.sh"]
+CMD ["node", "current/index.js"]
