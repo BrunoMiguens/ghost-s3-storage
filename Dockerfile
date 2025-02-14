@@ -2,10 +2,13 @@
 FROM ghost:5-alpine
 
 # Install git and build dependencies
-RUN apk add --no-cache git python3 make g++ 
+RUN apk add --no-cache git python3 make g++ nodejs npm
 
 # Set working directory
 WORKDIR /var/lib/ghost
+
+# Install babel and other build dependencies
+RUN npm install -g @babel/core @babel/cli
 
 # Install ghost-minio adapter
 RUN mkdir -p /var/lib/ghost/content/adapters/storage/ghost-minio && \
