@@ -1,16 +1,16 @@
 # Dockerfile
 FROM ghost:5-alpine
 
+# Install git
+RUN apk add --no-cache git
+
 # Set working directory
 WORKDIR /var/lib/ghost
 
-# Install Git (needed for package installation)
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
-
 # Install ghost-minio adapter in the correct location
 RUN mkdir -p /var/lib/ghost/content/adapters/storage/ghost-minio && \
-    cd /var/lib/ghost/content/adapters/storage/ghost-minio && \
-    npm install ghost-minio@github:captbrogers/ghost-minio
+  cd /var/lib/ghost/content/adapters/storage/ghost-minio && \
+  npm install ghost-minio@github:captbrogers/ghost-minio
 
 # Set up configuration
 COPY config.production.json ./content/config.production.json
