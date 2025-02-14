@@ -7,19 +7,19 @@ RUN apk add --no-cache git
 # Set working directory
 WORKDIR /var/lib/ghost
 
-# Install ghost-minio adapter in the correct location
+# Create directories and set permissions
 RUN mkdir -p /var/lib/ghost/content/adapters/storage/ghost-minio && \
-  cd /var/lib/ghost/content/adapters/storage/ghost-minio && \
-  npm install ghost-minio@github:captbrogers/ghost-minio
+    chown -R node:node /var/lib/ghost/content
 
-# Set up configuration
-COPY config.production.json ./content/config.production.json
-
-# Set permissions
-RUN chown -R node:node /var/lib/ghost/content
-
-# Switch to node user
+# Switch to node user for installation
 USER node
+
+# Install ghost-minio adapter in the correct location
+RUN cd /var/lib/ghost/content/adapters/storage/ghost-minio && \
+    npm install ghost-minio@github:captbrogers/ghost-minio
+
+# Copy config file
+COPY --chown=node:node config.production.json /var/lib/ghost/config.production.json
 
 # Start Ghost
 CMD ["node", "current/index.js"]
