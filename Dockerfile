@@ -4,6 +4,9 @@ FROM ghost:5-alpine
 # Set working directory
 WORKDIR /var/lib/ghost
 
+# Install Git (needed for package installation)
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
 # Install ghost-minio adapter in the correct location
 RUN mkdir -p /var/lib/ghost/content/adapters/storage/ghost-minio && \
     cd /var/lib/ghost/content/adapters/storage/ghost-minio && \
